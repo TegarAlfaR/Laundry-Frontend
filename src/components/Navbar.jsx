@@ -9,19 +9,19 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-[80px] py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-10 lg:mx-[80px] py-4 flex items-center justify-between">
         <Link to="about" smooth={true} duration={500} offset={-80}>
           <h1 className="text-2xl font-bold text-[#21B7E2] cursor-pointer hover:scale-110 duration-300">
             Antar Jemput Laundry
           </h1>
         </Link>
 
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <button onClick={toggleMenu} className="text-blue-500">
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-        <div className="hidden md:flex gap-6 items-center">
+        <div className="hidden lg:flex gap-6 items-center">
           {[
             { label: "About", href: "#about" },
             { label: "How it's Work", href: "#howitswork" },
@@ -46,7 +46,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-6 pb-4 flex flex-col gap-4 bg-white">
+        <div className="lg:hidden px-6 pb-4 flex flex-col gap-4 bg-white">
           {[
             { label: "About", href: "#about" },
             { label: "How it's Work", href: "#howitswork" },
