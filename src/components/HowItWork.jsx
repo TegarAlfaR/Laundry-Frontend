@@ -5,8 +5,11 @@ import Step4 from "../../public/images/step-4.svg";
 
 export default function HowItWork() {
   return (
-    <section className="bg-gradient-to-br from-[#21B7E2] to-[#1895b8] py-16 text-white">
-      <div className="container mx-auto px-4">
+    <section
+      id="howitswork"
+      className="bg-gradient-to-br from-[#21B7E2] to-[#1895b8]  text-white scroll-mt-20"
+    >
+      <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h3 className="inline-block bg-white text-[#21B7E2] font-bold text-xl px-6 py-2 rounded-full mb-4">
             How It Works
