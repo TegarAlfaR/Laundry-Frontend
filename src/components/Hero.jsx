@@ -1,0 +1,31 @@
+import HeroLaundry from "../../public/hero-laundry.svg";
+
+export default function Hero() {
+  return (
+    <>
+      <div className="flex justify-between items-center ">
+        <div className="w-[500px] space-y-6 ml-[80px]">
+          <p className="text-5xl font-bold text-gray-800 leading-tight">
+            Laundry Bersih, Waktu Lebih Luang
+          </p>
+          <p className="text-gray-600 text-lg">
+            Nikmati waktu luang tanpa ribet! Kami hadir dengan layanan laundry
+            antar-jemput yang cepat, bersih, dan terpercaya. Cukup pesan, kami
+            datang.
+          </p>
+          <button className="bg-[#D0F6FF] text-blue-500 font-semibold rounded-3xl py-3 px-6 mt-4 w-[220px] cursor-pointer  duration-300 hover:bg-blue-400 hover:text-white shadow-lg">
+            How It's Work
+          </button>
+          <p className="text-sm text-gray-500 mt-2">
+            💡 Tanpa minimum order • 🔒 Aman & Higienis • ⏱️ 24 Jam Selesai
+          </p>
+        </div>
+        <img
+          src={HeroLaundry}
+          alt="Laundry illustration"
+          className="w-[500px] drop-shadow-xl"
+        />
+      </div>
+    </>
+  );
+}
