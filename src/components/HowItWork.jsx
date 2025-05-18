@@ -5,14 +5,16 @@ import Step4 from "../../public/images/step-4.svg";
 
 export default function HowItWork() {
   return (
-    <>
-      <div className="bg-[#D0F6FF] flex flex-col justify-center items-center">
-        <p className="mt-[40px] mb-[14px] text-[25px] text-[#21B7E2] font-bold">
-          How It Works
-        </p>
-        <p className="text-[60px]">Get It Done In 4 Steps</p>
+    <section className="bg-gradient-to-br from-[#21B7E2] to-[#1895b8] py-16 text-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h3 className="inline-block bg-white text-[#21B7E2] font-bold text-xl px-6 py-2 rounded-full mb-4">
+            How It Works
+          </h3>
+          <h2 className="text-5xl font-bold">Get It Done In 4 Steps</h2>
+        </div>
 
-        <div className="mt-[70px] mb-[50px] flex gap-7 flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
           {[
             { step: "STEP 1", label: "Pickup", image: Step1 },
             { step: "STEP 2", label: "Wash & Dry", image: Step2 },
@@ -21,17 +23,20 @@ export default function HowItWork() {
           ].map((item, index) => (
             <div
               key={index}
-              className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-between w-[210px] h-[320px] p-4"
+              className="bg-white rounded-xl shadow-lg overflow-hidden w-64 transform transition-transform hover:scale-105"
             >
-              <div className="flex flex-col items-center">
-                <h5 className="mb-2 text-[22px] text-[#21B7E2] mt-[10px]">
+              <div className="p-6 text-center">
+                <h4 className="text-[#21B7E2] font-bold text-lg">
                   {item.step}
-                </h5>
-
-                <p className="text-[30px]">{item.label}</p>
+                </h4>
+                <h3 className="text-gray-800 text-2xl font-bold mt-1">
+                  {item.label}
+                </h3>
               </div>
-              <div className="w-full border border-[#21B7E2]" />
-              <div className="h-[150px] flex items-center justify-center">
+
+              <div className="w-full border-t border-[#21B7E2]" />
+
+              <div className="p-6 flex items-center justify-center h-40 bg-gray-50">
                 <img
                   src={item.image}
                   alt={item.label}
@@ -42,6 +47,6 @@ export default function HowItWork() {
           ))}
         </div>
       </div>
-    </>
+    </section>
   );
 }
