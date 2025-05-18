@@ -3,7 +3,7 @@ import HeroLaundry from "../../public/images/hero-laundry.svg";
 export default function Hero() {
   return (
     <>
-      <div className="flex justify-between items-center ">
+      <div id="about" className="flex justify-between items-center ">
         <div className="w-[500px] space-y-6 ml-[80px]">
           <p className="text-[65px] font-bold text-gray-800 leading-tight">
             Laundry Bersih, Waktu Lebih Luang
