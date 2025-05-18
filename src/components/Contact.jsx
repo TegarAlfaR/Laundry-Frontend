@@ -2,7 +2,7 @@ import WaIcon from "../../public/images/wa-icon.png";
 
 export default function Contact() {
   return (
-    <section className=" py-20">
+    <section id="contact" className=" py-20">
       <div className="w-full">
         <div className="overflow-hidden mx-[80px]">
           <div className="flex flex-col md:flex-row">

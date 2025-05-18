@@ -48,7 +48,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  href="#about"
                   className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
                 >
                   <span className="mr-2">•</span> About
@@ -56,7 +56,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#howitswork"
                   className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
                 >
                   <span className="mr-2">•</span> How It Works
@@ -64,7 +64,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#services"
                   className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
                 >
                   <span className="mr-2">•</span> Services
@@ -72,7 +72,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#contact"
                   className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
                 >
                   <span className="mr-2">•</span> Contact Us
