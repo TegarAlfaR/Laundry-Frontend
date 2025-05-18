@@ -8,7 +8,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-[80px] py-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#21B7E2] cursor-pointer hover:scale-110 duration-300">
           Antar Jemput Laundry
         </h1>
