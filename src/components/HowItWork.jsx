@@ -7,7 +7,7 @@ export default function HowItWork() {
   return (
     <>
       <div className="bg-[#D0F6FF] flex flex-col justify-center items-center">
-        <p className="mt-[40px] mb-[14px] text-[25px] text-[#21B7E2]">
+        <p className="mt-[40px] mb-[14px] text-[25px] text-[#21B7E2] font-bold">
           How It Works
         </p>
         <p className="text-[60px]">Get It Done In 4 Steps</p>
@@ -27,8 +27,10 @@ export default function HowItWork() {
                 <h5 className="mb-2 text-[22px] text-[#21B7E2] mt-[10px]">
                   {item.step}
                 </h5>
+
                 <p className="text-[30px]">{item.label}</p>
               </div>
+              <div className="w-full border border-[#21B7E2]" />
               <div className="h-[150px] flex items-center justify-center">
                 <img
                   src={item.image}
