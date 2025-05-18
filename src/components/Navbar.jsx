@@ -21,12 +21,12 @@ export default function Navbar() {
           {["About", "How it's Work", "Services", "Contact Us"].map((item) => (
             <p
               key={item}
-              className="cursor-pointer text-[#21B7E2] transition duration-300 hover:text-blue-700 hover:scale-110"
+              className="cursor-pointer text-[#21B7E2] transition duration-300 hover:text-blue-500 hover:scale-110"
             >
               {item}
             </p>
           ))}
-          <button className="bg-[#21B7E2] text-white px-4 py-2 rounded-md hover:scale-110 transition duration-300">
+          <button className="bg-[#21B7E2] text-white px-4 py-2 rounded-md hover:bg-blue-500 hover:scale-110 transition duration-300">
             New Order
           </button>
         </div>
