@@ -13,7 +13,7 @@ export default function Hero() {
             antar-jemput yang cepat, bersih, dan terpercaya. Cukup pesan, kami
             datang.
           </p>
-          <button className="bg-[#D0F6FF] text-blue-500 font-semibold rounded-3xl py-3 px-6 mt-4 w-[220px] cursor-pointer  duration-300 hover:bg-blue-400 hover:text-white shadow-lg">
+          <button className="bg-[#21B7E2] text-[#D0F6FF] font-semibold rounded-3xl py-3 px-6 mt-4 w-[220px] cursor-pointer  duration-300 hover:bg-blue-500 hover:scale-110 shadow-lg">
             How It's Work
           </button>
           <p className="text-sm text-gray-500 mt-2">
