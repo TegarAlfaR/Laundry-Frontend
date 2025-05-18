@@ -53,7 +53,7 @@ export default function Service() {
     <div className="py-20 ">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-4xl font-extrabold text-center text-[#21B7E2] mb-14">
-          Service & Package
+          Service & Price
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -82,7 +82,7 @@ export default function Service() {
                   ))}
                 </div>
               </div>
-
+              <div className="w-full border border-gray-400" />
               <h3 className="text-2xl font-semibold text-blue-400 mb-5 text-center">
                 {service.title}
               </h3>
