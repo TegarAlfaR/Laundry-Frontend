@@ -4,10 +4,10 @@ export default function Contact() {
   return (
     <section id="contact" className=" py-20">
       <div className="w-full">
-        <div className="overflow-hidden mx-[80px]">
+        <div className="overflow-hidden mx-10 lg:mx-[80px]">
           <div className="flex flex-col md:flex-row">
             {/* Bagian Kiri - Form/Info */}
-            <div className="w-full md:w-1/2 ">
+            <div className="w-full md:w-1/2 mb-8 md:mb-0">
               <h2 className="text-3xl font-bold text-[#21B7E2] mb-2">
                 Contact Us
               </h2>
@@ -106,10 +106,10 @@ export default function Contact() {
                 <img src={WaIcon} alt="WhatsApp Icon" className="w-12 h-12" />
               </div>
 
-              <h3 className="text-2xl font-bold mb-4">
+              <h3 className="text-lg md:text-2xl font-bold mb-4">
                 Ingin Pesan / Butuh Bantuan Cepat?
               </h3>
-              <p className="text-white/90 text-center mb-8">
+              <p className="text-white/90 text-center text-sm md:text-lg mb-8">
                 Tim layanan pelanggan kami siap membantu Anda 24/7. Dapatkan
                 respons instan melalui WhatsApp.
               </p>
@@ -118,7 +118,7 @@ export default function Contact() {
                 href="https://wa.me/62881011836906"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-white text-[#21B7E2] font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 hover:bg-blue-50 transition duration-300 hover:scale-105"
+                className="w-full bg-white text-[#21B7E2] text-sm md:text-lg font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 hover:bg-blue-50 transition duration-300 hover:scale-105"
               >
                 <img src={WaIcon} alt="WhatsApp Icon" className="w-6 h-6" />
                 Chat via WhatsApp
