@@ -15,6 +15,7 @@ export default function OrderModal({ isOpen, onClose }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +28,19 @@ export default function OrderModal({ isOpen, onClose }) {
     setError(null);
     try {
       await createOrder(formData);
-      onClose();
+      setSuccessMessage("Order berhasil dibuat!");
+      setFormData({
+        user_name: "",
+        address: "",
+        pickup_time: "",
+        laundry_category: "",
+        quantity: 1,
+      });
+
+      setTimeout(() => {
+        setSuccessMessage("");
+        onClose();
+      }, 2000);
     } catch (err) {
       setError("Gagal membuat order. " + err.message);
     } finally {
@@ -48,6 +61,12 @@ export default function OrderModal({ isOpen, onClose }) {
         <h2 className="text-2xl font-semibold mb-4 text-[#21B7E2]">
           Form Order Laundry
         </h2>
+        {successMessage && (
+          <div className="mb-4 p-4 rounded text-green-700 bg-green-100 border border-green-300 transition-all duration-300 animate-bounce">
+            {successMessage}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-gray-700 font-medium mb-1">Nama</label>
