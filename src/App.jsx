@@ -1,21 +1,16 @@
 import React from "react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import HowItWork from "./components/HowItWork";
-import Service from "./components/Service";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <HowItWork />
-      <Service />
-      <Contact />
-      <Footer />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
