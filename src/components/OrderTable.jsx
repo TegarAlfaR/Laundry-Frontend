@@ -8,14 +8,11 @@ const OrderTable = () => {
   const orders = [
     { id: 1, name: 'Rizky', service: 'Cuci Kering', date: '2025-05-29', status: 'Selesai' },
     { id: 2, name: 'Andi', service: 'Cuci Setrika', date: '2025-05-28', status: 'Diproses' },
-    // Tambahkan lebih banyak data jika ingin
   ];
 
   useEffect(() => {
-    // Inisialisasi DataTables
     $(tableRef.current).DataTable();
 
-    // Optional: destroy on unmount
     return () => {
       if ($.fn.DataTable.isDataTable(tableRef.current)) {
         $(tableRef.current).DataTable().destroy();
