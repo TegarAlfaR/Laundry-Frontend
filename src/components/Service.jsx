@@ -3,9 +3,24 @@ import useLaundryService from "../hooks/useLaundryService";
 export default function Service() {
   const { laundryService, loading, error } = useLaundryService();
 
+  // Debug - tambahin ini dulu
+  console.log("Component - laundryService:", laundryService);
+  console.log("Component - loading:", loading);
+  console.log("Component - error:", error);
+
   if (loading) return <p className="text-center text-lg">Loading...</p>;
   if (error)
     return <p className="text-center text-red-500">Error: {error.message}</p>;
+
+  // SAFETY CHECK - ini yang penting!
+  if (!laundryService || !Array.isArray(laundryService)) {
+    return <p className="text-center text-gray-500">No services available</p>;
+  }
+
+  // Kalau array kosong
+  if (laundryService.length === 0) {
+    return <p className="text-center text-gray-500">No services found</p>;
+  }
 
   return (
     <section id="services" className="bg-white py-12">
@@ -22,16 +37,18 @@ export default function Service() {
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-semibold capitalize">
-                  {service.laundryCategory.replace(/-/g, " ")}
+                  {service.laundryCategory?.replace(/-/g, " ") ||
+                    "Unknown Service"}
                 </h3>
                 <span className="bg-white text-[#21B7E2] font-bold text-sm px-3 py-1 rounded-full shadow">
-                  Rp {service.price.toLocaleString()}
+                  Rp {service.price?.toLocaleString() || "0"}
                 </span>
               </div>
 
               <p className="text-sm opacity-90 mb-6">
-                Layanan {service.laundryCategory.replace(/-/g, " ")} berkualitas
-                dan cepat untuk kebutuhan harian Anda.
+                Layanan{" "}
+                {service.laundryCategory?.replace(/-/g, " ") || "laundry"}{" "}
+                berkualitas dan cepat untuk kebutuhan harian Anda.
               </p>
             </div>
           ))}
