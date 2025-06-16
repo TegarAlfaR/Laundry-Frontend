@@ -3,21 +3,14 @@ import useLaundryService from "../hooks/useLaundryService";
 export default function Service() {
   const { laundryService, loading, error } = useLaundryService();
 
-  // Debug - tambahin ini dulu
-  console.log("Component - laundryService:", laundryService);
-  console.log("Component - loading:", loading);
-  console.log("Component - error:", error);
-
   if (loading) return <p className="text-center text-lg">Loading...</p>;
   if (error)
     return <p className="text-center text-red-500">Error: {error.message}</p>;
 
-  // SAFETY CHECK - ini yang penting!
   if (!laundryService || !Array.isArray(laundryService)) {
     return <p className="text-center text-gray-500">No services available</p>;
   }
 
-  // Kalau array kosong
   if (laundryService.length === 0) {
     return <p className="text-center text-gray-500">No services found</p>;
   }
