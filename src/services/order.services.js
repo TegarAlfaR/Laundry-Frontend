@@ -1,8 +1,21 @@
-import axios from "../api/axiosInstance";
+import axiosInstance from "../api/axiosInstance";
 
-const createOrder = async (data) => {
-  const response = await axios.post("/orders", data);
-  return response.data;
+const makeOrders = async (order) => {
+  try {
+    const response = await axiosInstance.post("/transactions", order);
+    return response.data?.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export default createOrder;
+const getOrdersHistory = async () => {
+  try {
+    const response = await axiosInstance.get("/transactions");
+    return response.data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { makeOrders, getOrdersHistory };
