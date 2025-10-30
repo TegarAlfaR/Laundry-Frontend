@@ -19,7 +19,7 @@ const OrdersHistoryPage = () => {
   const handleCopy = (text, type) => {
     navigator.clipboard.writeText(text);
     setCopied(type);
-    setTimeout(() => setCopied(""), 2000); 
+    setTimeout(() => setCopied(""), 2000);
   };
 
   useEffect(() => {
@@ -183,7 +183,11 @@ const OrdersHistoryPage = () => {
                   {order.order_item?.map((item) => (
                     <li key={item.orderItemId} className="text-gray-600">
                       {item.service?.laundryCategory ||
-                        "Layanan tidak ditemukan"}
+                        "Layanan tidak ditemukan"}{" "}
+                      :{" "}
+                      <span className="text-gray-800 font-semibold">
+                        {item.quantity ?? 0}
+                      </span>
                     </li>
                   ))}
                 </ul>

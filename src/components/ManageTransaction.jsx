@@ -123,10 +123,22 @@ const ManageTransactions = () => {
                     <ul className="list-disc list-inside pl-1 text-gray-700">
                       {trx.order_item?.map((item) => (
                         <li key={item.orderItemId}>
-                          {item.service?.laundryCategory || "N/A"}
+                          {item.service?.laundryCategory || "N/A"} :{" "}
+                          <span className="font-semibold">
+                            {item.quantity ?? 0}
+                          </span>
                         </li>
                       ))}
                     </ul>
+                    <p className="mt-2 text-sm text-gray-600">
+                      Jumlah Layanan:{" "}
+                      <span className="font-semibold text-gray-800">
+                        {trx.order_item?.reduce(
+                          (acc, item) => acc + (item.quantity || 0),
+                          0
+                        )}
+                      </span>
+                    </p>
                   </div>
                   <div className="border-t pt-3">
                     <p className="font-semibold text-gray-500">Total Harga:</p>
