@@ -1,42 +1,108 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  ClipboardList,
-  PackagePlus,
-  ArrowLeft,
-  Info,
-  Copy,
-} from "lucide-react";
-
+import { ClipboardList, PackagePlus, ArrowLeft } from "lucide-react";
+import Swal from "sweetalert2";
 import transactionServices from "../services/order.services";
+import paymentServices from "../services/payment.services";
 
 const OrdersHistoryPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [copied, setCopied] = useState("");
 
-  const handleCopy = (text, type) => {
-    navigator.clipboard.writeText(text);
-    setCopied(type);
-    setTimeout(() => setCopied(""), 2000);
+  // Load Snap JS SDK
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+    script.setAttribute(
+      "data-client-key",
+      import.meta.env.VITE_MIDTRANS_CLIENT_KEY
+    );
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const fetchOrdersHistory = async () => {
+    try {
+      const data = await transactionServices.getOrdersHistory();
+      setOrders(data);
+    } catch (err) {
+      setError("Gagal memuat riwayat pesanan. Silakan coba lagi nanti.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchOrdersHistory = async () => {
-      try {
-        const data = await transactionServices.getOrdersHistory();
-        setOrders(data);
-      } catch (err) {
-        setError("Gagal memuat riwayat pesanan. Silakan coba lagi nanti.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrdersHistory();
   }, []);
+
+  const handlePayment = async (transactionId) => {
+    try {
+      const response = await paymentServices.createPayment(transactionId);
+      const token = response.token;
+
+      if (window.snap && token) {
+        window.snap.pay(token, {
+          onSuccess: function (result) {
+            Swal.fire({
+              title: "Pembayaran Berhasil!",
+              text: "Terima kasih, pesanan kamu sedang diproses.",
+              icon: "success",
+              confirmButtonColor: "#21B7E2",
+            });
+            console.log(result);
+            fetchOrdersHistory();
+          },
+          onPending: function (result) {
+            Swal.fire({
+              title: "Menunggu Pembayaran",
+              text: "Silakan selesaikan pembayaran kamu.",
+              icon: "info",
+              confirmButtonColor: "#21B7E2",
+            });
+            console.log(result);
+          },
+          onError: function (result) {
+            Swal.fire({
+              title: "Terjadi Kesalahan!",
+              text: "Gagal memproses pembayaran. Coba lagi ya.",
+              icon: "error",
+              confirmButtonColor: "#21B7E2",
+            });
+            console.error(result);
+          },
+          onClose: function () {
+            Swal.fire({
+              title: "Pembayaran Dibatalkan",
+              text: "Kamu menutup popup tanpa menyelesaikan pembayaran.",
+              icon: "warning",
+              confirmButtonColor: "#21B7E2",
+            });
+          },
+        });
+      } else {
+        Swal.fire({
+          title: "Gagal Memuat Midtrans",
+          text: "Silakan refresh halaman dan coba lagi.",
+          icon: "error",
+          confirmButtonColor: "#21B7E2",
+        });
+      }
+    } catch (err) {
+      console.error("Gagal membuat pembayaran:", err);
+      Swal.fire({
+        title: "Gagal Membuat Pembayaran",
+        text: err?.response?.data?.message || "Terjadi kesalahan tak terduga.",
+        icon: "error",
+        confirmButtonColor: "#21B7E2",
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -59,57 +125,6 @@ const OrdersHistoryPage = () => {
         <ArrowLeft size={16} />
         Kembali
       </Link>
-
-      <div className="bg-sky-50  p-6 rounded-r-lg flex gap-4 items-start mb-8">
-        <Info className="w-6 h-6 text-sky-500 flex-shrink-0 mt-1" />
-        <div className="flex-grow">
-          <h3 className="font-bold text-gray-800 mb-2">
-            Informasi Pembayaran & Bantuan
-          </h3>
-          <p className="text-sm text-gray-600 mb-3">
-            Silakan lakukan pembayaran ke salah satu rekening berikut dan
-            konfirmasi melalui WhatsApp.
-          </p>
-          <div className="space-y-2 text-sm">
-            {[
-              { name: "BCA", number: "123456789" },
-              { name: "Dana", number: "123456789" },
-              { name: "Gopay", number: "123456789" },
-            ].map((acc) => (
-              <div
-                key={acc.name}
-                className="flex justify-between items-center bg-sky-100 p-2 rounded-md"
-              >
-                <span className="font-semibold text-gray-700">
-                  {acc.name}: <span className="font-mono">{acc.number}</span>
-                </span>
-                <button
-                  onClick={() => handleCopy(acc.number, acc.name)}
-                  className="text-gray-500 hover:text-sky-600"
-                  title={`Salin nomor ${acc.name}`}
-                >
-                  {copied === acc.name ? (
-                    <span className="text-xs text-green-600">Disalin!</span>
-                  ) : (
-                    <Copy size={16} />
-                  )}
-                </button>
-              </div>
-            ))}
-          </div>
-          <p className="text-sm text-gray-600 mt-4">
-            Jika ada pertanyaan, hubungi kami via WhatsApp:
-          </p>
-          <a
-            href="https://wa.me/62881011836906"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-600 shadow-sm hover:shadow-md transition-all duration-300"
-          >
-            Chat via WhatsApp
-          </a>
-        </div>
-      </div>
 
       <div className="flex items-center gap-4 mb-8">
         <ClipboardList className="w-8 h-8 text-sky-500" />
@@ -200,6 +215,15 @@ const OrdersHistoryPage = () => {
                     ? `Rp ${order.totalPrice.toLocaleString("id-ID")}`
                     : "Menunggu Dihitung"}
                 </p>
+
+                {order.status === "on-progress" && (
+                  <button
+                    onClick={() => handlePayment(order.transactionId)}
+                    className="mt-3 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                  >
+                    Bayar Sekarang
+                  </button>
+                )}
               </div>
             </div>
           ))}
