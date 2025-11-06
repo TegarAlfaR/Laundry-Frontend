@@ -21,28 +21,39 @@ const Report = () => {
     totalRevenue: 0,
   });
 
+  // ✅ Ambil laporan dari backend
   const fetchReports = async () => {
     try {
       setLoading(true);
 
-      // Buat query string untuk filter
       const queryParams = new URLSearchParams();
-      if (filters.startDate) queryParams.append("startDate", filters.startDate);
-      if (filters.endDate) queryParams.append("endDate", filters.endDate);
-      if (filters.status) queryParams.append("status", filters.status);
+      const { startDate, endDate, status } = filters;
 
-      // Ambil data dari service
-      const data = await getReport(queryParams.toString());
+      // kirim langsung string ISO dari browser
+      if (startDate) {
+        const start = new Date(`${startDate}T00:00:00+07:00`).toISOString();
+        queryParams.append("startDate", start);
+      }
+
+      if (endDate) {
+        const end = new Date(`${endDate}T23:59:59+07:00`).toISOString();
+        queryParams.append("endDate", end);
+      }
+
+      if (status && status !== "all") {
+        queryParams.append("status", status);
+      }
+
+      const res = await getReport(queryParams.toString());
+      const data = res.data || [];
+      const totalTransactions = res.summary?.totalTransactions || 0;
+      const totalRevenue = res.summary?.totalRevenue || 0;
+
       setReports(data);
-
-      // Hitung summary
-      const totalTransactions = data.length;
-      const totalRevenue = data.reduce(
-        (sum, trx) => sum + (trx.payment?.grossAmount || 0),
-        0
-      );
       setSummary({ totalTransactions, totalRevenue });
+      setError(null);
     } catch (err) {
+      console.error("Error fetching reports:", err);
       setError(err.message || "Gagal memuat laporan");
     } finally {
       setLoading(false);
@@ -58,10 +69,9 @@ const Report = () => {
     fetchReports();
   };
 
-  // 📄 Export ke PDF
+  // 📄 Export PDF
   const exportPDF = () => {
     const doc = new jsPDF();
-
     doc.setFontSize(16);
     doc.text("Laporan Transaksi", 14, 15);
     doc.setFontSize(10);
@@ -92,7 +102,7 @@ const Report = () => {
     doc.save("Laporan_Transaksi.pdf");
   };
 
-  // 📊 Export ke CSV
+  // 📊 Export CSV
   const exportCSV = () => {
     const csvData = reports.map((trx) => ({
       Tanggal: new Date(trx.createdAt).toLocaleDateString("id-ID"),
@@ -110,6 +120,7 @@ const Report = () => {
     return (
       <div className="text-gray-500 text-center mt-10">Memuat laporan...</div>
     );
+
   if (error)
     return (
       <div className="text-red-500 text-center mt-10">
@@ -156,7 +167,9 @@ const Report = () => {
           />
         </div>
         <div>
-          <label className="block text-sm text-gray-600 mb-1">Status</label>
+          <label className="block text-sm text-gray-600 mb-1">
+            Status Pembayaran
+          </label>
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
@@ -164,8 +177,7 @@ const Report = () => {
           >
             <option value="">Semua</option>
             <option value="pending">Pending</option>
-            <option value="on-progress">On Progress</option>
-            <option value="success">Success</option>
+            <option value="paid">Paid</option>
             <option value="failed">Failed</option>
           </select>
         </div>
