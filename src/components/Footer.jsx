@@ -8,106 +8,94 @@ import {
 } from "lucide-react";
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-gradient-to-r from-sky-900 to-blue-950 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-5">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-4 space-y-4">
-            <h2 className="text-2xl font-bold text-sky-400 flex items-center">
-              <span className="mr-2">✨</span>
-              Antar Jemput Laundry
+    <footer className="relative bg-gradient-to-br from-sky-950 via-slate-900 to-blue-950 text-gray-300 pt-20 pb-10">
+      {/* Glow effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-10 w-72 h-72 bg-sky-500/20 blur-3xl rounded-full"></div>
+        <div className="absolute bottom-0 right-10 w-52 h-52 bg-blue-600/20 blur-3xl rounded-full"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10 px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          {/* Brand + Social */}
+          <div className="md:col-span-4 space-y-5">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              ✨ Antar Jemput Laundry
             </h2>
-            <p className="text-gray-300 mt-2">
-              We provide premium laundry services with convenient pickup and
-              delivery right to your doorstep.
+            <p className="text-gray-400 leading-relaxed max-w-sm">
+              Laundry bersih dan rapi dengan layanan antar-jemput cepat dan
+              terjamin kebersihannya.
             </p>
-            <div className="flex space-x-4 pt-4">
-              <a
-                href="#"
-                className="text-gray-300 hover:text-sky-400 transition duration-300"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-300 hover:text-sky-400 transition duration-300"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-300 hover:text-sky-400 transition duration-300"
-              >
-                <Twitter size={20} />
-              </a>
+
+            <div className="flex gap-4 pt-2">
+              {[Facebook, Instagram, Twitter].map((Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition backdrop-blur border border-white/10"
+                >
+                  <Icon size={20} className="text-sky-400" />
+                </a>
+              ))}
             </div>
           </div>
 
-          <div className="md:col-span-3 md:ml-8">
-            <h3 className="text-lg font-bold mb-4 text-sky-400">Navigation</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="#about"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
-                >
-                  <span className="mr-2">•</span> About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#howitswork"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
-                >
-                  <span className="mr-2">•</span> How It Works
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#services"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
-                >
-                  <span className="mr-2">•</span> Services
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300 flex items-center"
-                >
-                  <span className="mr-2">•</span> Contact Us
-                </a>
-              </li>
+          {/* Navigation */}
+          <div className="md:col-span-3">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Navigation
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { name: "About", id: "#about" },
+                { name: "How It Works", id: "#howitswork" },
+                { name: "Services", id: "#services" },
+                { name: "Contact Us", id: "#contact" },
+              ].map((nav, idx) => (
+                <li key={idx}>
+                  <a
+                    href={nav.id}
+                    className="hover:text-sky-400 flex items-center gap-2 transition"
+                  >
+                    <span className="text-sky-400">•</span> {nav.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Contact */}
           <div className="md:col-span-5">
-            <h3 className="text-lg font-bold mb-4 text-sky-400">Contact Us</h3>
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <MapPin
-                  size={18}
-                  className="text-sky-400 mt-1 mr-2 flex-shrink-0"
-                />
-                <p className="text-gray-300">
-                  Jl mengkudu Gg V Blok M, no.31, Kel.Lagoa, Kec.Koja, Jakarta
-                  Utara.
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Contact Us
+            </h3>
+
+            <div className="space-y-4 text-gray-400">
+              <div className="flex items-start gap-3">
+                <MapPin size={18} className="text-sky-400 mt-1" />
+                <p>
+                  Jl Mengkudu Gg V Blok M No.31, Lagoa, Koja, Jakarta Utara.
                 </p>
               </div>
-              <div className="flex items-center">
-                <Mail size={18} className="text-sky-400 mr-2 flex-shrink-0" />
+
+              <div className="flex items-center gap-3">
+                <Mail size={18} className="text-sky-400" />
                 <a
+                  className="hover:text-sky-400 transition"
                   href="mailto:anteraja@laundry.com"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300"
                 >
                   anteraja@laundry.com
                 </a>
               </div>
-              <div className="flex items-center">
-                <Phone size={18} className="text-sky-400 mr-2 flex-shrink-0" />
+
+              <div className="flex items-center gap-3">
+                <Phone size={18} className="text-sky-400" />
                 <a
-                  href="tel:+6288101183690"
-                  className="text-gray-300 hover:text-sky-400 transition duration-300"
+                  className="hover:text-sky-400 transition"
+                  href="tel:+62881011836906"
                 >
                   +62 881-0118-36906
                 </a>
@@ -116,11 +104,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>
-            © {new Date().getFullYear()} Antar Jemput Laundry. All rights
-            reserved.
-          </p>
+        {/* Bottom area */}
+        <div className="border-t border-white/10 mt-10 pt-6 text-center text-sm text-gray-500">
+          © {year} Antar Jemput Laundry — All rights reserved.
         </div>
       </div>
     </footer>

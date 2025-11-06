@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, PackagePlus } from "lucide-react";
+import Swal from "sweetalert2";
 
 import orderServices from "../services/order.services";
 import getLaundryService from "../services/laundryService.services";
@@ -12,8 +13,6 @@ const OrderPage = () => {
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,8 +21,13 @@ const OrderPage = () => {
       try {
         const data = await getLaundryService();
         setServices(data);
-      } catch (err) {
-        setError("Gagal memuat daftar layanan.");
+      } catch {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal memuat layanan",
+          text: "Terjadi kesalahan saat memuat daftar layanan.",
+          confirmButtonColor: "#0ea5e9",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -33,23 +37,27 @@ const OrderPage = () => {
 
   const handleServiceChange = (e) => {
     const serviceId = parseInt(e.target.value);
-    if (e.target.checked) {
-      setSelectedServices((prev) => [...prev, serviceId]);
-    } else {
-      setSelectedServices((prev) => prev.filter((id) => id !== serviceId));
-    }
+    setSelectedServices((prev) =>
+      e.target.checked
+        ? [...prev, serviceId]
+        : prev.filter((id) => id !== serviceId)
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (selectedServices.length === 0 || !address || !pickupTime) {
-      setError("Harap lengkapi semua field dan pilih minimal satu layanan.");
+      Swal.fire({
+        icon: "warning",
+        title: "Form belum lengkap",
+        text: "Silakan isi semua field dan pilih minimal satu layanan.",
+        confirmButtonColor: "#0ea5e9",
+      });
       return;
     }
 
     setIsSubmitting(true);
-    setError(null);
-    setSuccess(false);
 
     try {
       const orderItems = selectedServices.map((id) => ({ serviceId: id }));
@@ -61,16 +69,23 @@ const OrderPage = () => {
       };
 
       await orderServices.makeOrders(orderData);
-      setSuccess(true);
-      setError(null);
-      setAddress("");
-      setPickupTime("");
-      setSelectedServices([]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Pesanan berhasil dibuat!",
+        text: "Anda akan diarahkan ke halaman pesanan Anda.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
 
       setTimeout(() => navigate("/my-orders"), 2000);
     } catch (err) {
-      const message = err.response?.data?.message || "Gagal membuat pesanan.";
-      setError(message);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Membuat Pesanan",
+        text: err.response?.data?.message || "Terjadi kesalahan.",
+        confirmButtonColor: "#0ea5e9",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -80,58 +95,72 @@ const OrderPage = () => {
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   const minDateTime = now.toISOString().slice(0, 16);
 
-  if (isLoading) {
-    return <div className="text-center mt-10">Memuat layanan...</div>;
-  }
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-100">
+        <div className="animate-pulse text-gray-500">Memuat layanan...</div>
+      </div>
+    );
 
   return (
-    <div className="flex justify-center min-h-screen bg-slate-100 font-sans p-4">
-      <div className="w-full max-w-2xl p-8 space-y-6 bg-white rounded-xl shadow-lg self-start mt-10">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 bg-[#21B7E2] text-white font-bold px-4 py-2 rounded-full text-sm hover:bg-sky-600 transition-colors duration-300"
-        >
-          <ArrowLeft size={16} />
-          Kembali
-        </Link>
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 sm:p-6 md:p-8 font-sans">
+      <div className="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 bg-sky-100 text-sky-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-200 transition"
+          >
+            <ArrowLeft size={16} />
+            Kembali
+          </Link>
 
-        <div className="text-center pt-2">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Buat Pesanan Baru
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Pilih layanan yang Anda inginkan.
-          </p>
+          <div className="flex items-center gap-2 text-sky-600">
+            <PackagePlus size={22} />
+            <h1 className="text-xl sm:text-2xl font-bold">Buat Pesanan Baru</h1>
+          </div>
         </div>
 
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* ... bagian pilih layanan ... */}
+        <p className="text-gray-600 text-sm sm:text-base mb-6 text-center">
+          Isi detail di bawah ini untuk melakukan pemesanan laundry Anda.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* PILIH LAYANAN */}
           <div>
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Pilih Layanan
             </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {services.map((service) => (
                 <label
                   key={service.serviceId}
-                  className="flex items-center space-x-3 cursor-pointer"
+                  className={`flex items-center justify-between border rounded-lg p-3 cursor-pointer transition-all duration-300 ${
+                    selectedServices.includes(service.serviceId)
+                      ? "bg-sky-50 border-sky-400 shadow-md"
+                      : "bg-white hover:bg-gray-50"
+                  }`}
                 >
-                  <input
-                    type="checkbox"
-                    value={service.serviceId}
-                    onChange={handleServiceChange}
-                    checked={selectedServices.includes(service.serviceId)}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-gray-700">
-                    {service.laundryCategory} (Rp{" "}
-                    {service.price.toLocaleString("id-ID")})
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      value={service.serviceId}
+                      onChange={handleServiceChange}
+                      checked={selectedServices.includes(service.serviceId)}
+                      className="h-5 w-5 text-sky-600 border-gray-300 focus:ring-sky-500"
+                    />
+                    <span className="font-medium text-gray-800 capitalize">
+                      {service.laundryCategory.replace(/-/g, " ")}
+                    </span>
+                  </div>
+                  <span className="text-sm text-gray-600 font-semibold">
+                    Rp {service.price.toLocaleString("id-ID")}
                   </span>
                 </label>
               ))}
             </div>
           </div>
-          ;{/* ... bagian alamat ... */}
+
+          {/* ALAMAT */}
           <div>
             <label
               htmlFor="address"
@@ -146,10 +175,11 @@ const OrderPage = () => {
               placeholder="Masukkan alamat lengkap Anda"
               required
               rows={3}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-gray-700"
             />
           </div>
-          ;{/* BAGIAN WAKTU PENJEMPUTAN */}
+
+          {/* WAKTU PENJEMPUTAN */}
           <div>
             <label
               htmlFor="pickupTime"
@@ -164,29 +194,18 @@ const OrderPage = () => {
               onChange={(e) => setPickupTime(e.target.value)}
               required
               min={minDateTime}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-gray-700"
             />
           </div>
-          {/* ... Notifikasi & Tombol Submit ... */}
-          {error && (
-            <p className="text-sm font-medium text-center text-red-500">
-              {error}
-            </p>
-          )}
-          {success && (
-            <p className="text-sm font-medium text-center text-green-500">
-              Pesanan berhasil dibuat! Anda akan diarahkan...
-            </p>
-          )}
-          <div>
-            <button
-              type="submit"
-              className="w-full px-4 py-3 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors duration-200"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Memproses Pesanan..." : "Pesan Sekarang"}
-            </button>
-          </div>
+
+          {/* TOMBOL SUBMIT */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white py-3 rounded-lg font-semibold shadow-md hover:from-sky-600 hover:to-sky-700 focus:ring-4 focus:ring-sky-300 disabled:opacity-70 transition-all duration-200"
+          >
+            {isSubmitting ? "Memproses Pesanan..." : "Pesan Sekarang"}
+          </button>
         </form>
       </div>
     </div>

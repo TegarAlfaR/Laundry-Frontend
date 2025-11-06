@@ -1,35 +1,68 @@
 import HeroLaundry from "../../public/images/hero-laundry.svg";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <>
-      <div id="about" className="flex justify-between items-center ">
-        <div className="lg:w-[500px] space-y-6 p-10 lg:ml-[80px]">
-          <p className="text-xl md:text-3xl lg:text-5xl font-bold text-gray-800 leading-tight">
-            Laundry Bersih, Waktu Lebih Luang
-          </p>
-          <p className="text-gray-600 text-sm md:text-lg">
+    <section
+      className="relative overflow-hidden bg-gradient-to-br from-sky-50 via-white to-sky-100 py-20"
+      id="about"
+    >
+      <div className="container mx-auto px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
+        {/* Text Section */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="lg:w-[500px] space-y-6 text-center lg:text-left"
+        >
+          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-800 leading-tight">
+            <span className="bg-gradient-to-r from-sky-500 to-cyan-400 bg-clip-text text-transparent">
+              Laundry Bersih
+            </span>
+            , Waktu Lebih Luang
+          </h1>
+
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
             Nikmati waktu luang tanpa ribet! Kami hadir dengan layanan laundry
             antar-jemput yang cepat, bersih, dan terpercaya. Cukup pesan, kami
             datang.
           </p>
-          <a href="#howitswork">
-            <button className="bg-[#21B7E2] text-[#D0F6FF] font-semibold rounded-3xl py-3 px-6 mt-4 w-[220px] cursor-pointer  duration-300 hover:bg-blue-500 hover:scale-110 shadow-lg">
-              How It's Work
-            </button>
-          </a>
-          <p className="text-sm text-gray-500 mt-4">
+
+          <div className="flex justify-center lg:justify-start">
+            <a href="#howitswork">
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-sky-500 to-cyan-400 text-white font-semibold rounded-full py-3 px-8 shadow-lg hover:shadow-sky-200 transition duration-300"
+              >
+                How It Works
+              </motion.button>
+            </a>
+          </div>
+
+          <p className="text-sm text-gray-500 mt-4 flex flex-wrap justify-center lg:justify-start gap-2">
             💡 Tanpa minimum order • 🔒 Aman & Higienis • ⏱️ 24 Jam Selesai
           </p>
-        </div>
-        <div className="hidden lg:block">
+        </motion.div>
+
+        {/* Image Section */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex justify-center lg:justify-end"
+        >
           <img
             src={HeroLaundry}
             alt="Laundry illustration"
-            className="w-[500px] drop-shadow-xl"
+            className="w-[320px] md:w-[450px] lg:w-[520px] drop-shadow-2xl"
           />
-        </div>
+        </motion.div>
       </div>
-    </>
+
+      {/* Background Decoration */}
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-sky-200 rounded-full blur-3xl opacity-30"></div>
+      <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
+    </section>
   );
 }

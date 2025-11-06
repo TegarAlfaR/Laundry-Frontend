@@ -1,130 +1,117 @@
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import WaIcon from "../../public/images/wa-icon.png";
 
 export default function Contact() {
+  const contactItems = [
+    {
+      icon: <Phone className="w-6 h-6 text-sky-500" />,
+      title: "Telepon",
+      text: "+62 881-0118-36906",
+    },
+    {
+      icon: <Mail className="w-6 h-6 text-sky-500" />,
+      title: "Email",
+      text: "anteraja@laundry.com",
+    },
+    {
+      icon: <MapPin className="w-6 h-6 text-sky-500" />,
+      title: "Lokasi",
+      text: "Jl Mengkudu Gg V Blok M No.31, Kel. Lagoa, Kec. Koja, Jakarta Utara",
+    },
+  ];
+
   return (
-    <section id="contact" className=" py-20">
-      <div className="w-full">
-        <div className="overflow-hidden mx-10 lg:mx-[80px]">
-          <div className="flex flex-col md:flex-row">
-            {/* Bagian Kiri - Form/Info */}
-            <div className="w-full md:w-1/2 mb-8 md:mb-0">
-              <h2 className="text-3xl font-bold text-[#21B7E2] mb-2">
-                Contact Us
-              </h2>
-              <div className="w-16 h-1 bg-[#21B7E2] mb-6"></div>
+    <section
+      id="contact"
+      className="relative py-24 bg-gradient-to-b from-sky-50 to-white"
+    >
+      {/* Background Accent */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-sky-200 opacity-20 blur-3xl rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-cyan-200 opacity-20 blur-3xl rounded-full"></div>
+      </div>
 
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Punya pertanyaan seputar layanan laundry kami? Ingin booking
-                pickup atau informasi tambahan? Hubungi tim layanan pelanggan
-                kami sekarang.
-              </p>
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16"
+        >
+          <h3 className="inline-block bg-sky-100 text-sky-600 font-semibold text-lg px-6 py-2 rounded-full mb-4 shadow">
+            Hubungi Kami
+          </h3>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800">
+            Kami Siap Membantu Anda
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">
+            Punya pertanyaan, butuh bantuan, atau ingin memesan layanan? Hubungi
+            kami melalui kontak di bawah ini — tim kami siap 24/7!
+          </p>
+        </motion.div>
 
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="bg-blue-100 p-3 rounded-full mr-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-[#21B7E2]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
-                  </div>
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* Left - Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full md:w-1/2 bg-white rounded-2xl shadow-lg border border-sky-100 p-8 md:p-10"
+          >
+            <h2 className="text-2xl font-bold text-sky-600 mb-6">
+              Informasi Kontak
+            </h2>
+
+            <div className="space-y-8">
+              {contactItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="p-3 bg-sky-100 rounded-full">{item.icon}</div>
                   <div>
-                    <h3 className="font-medium text-gray-800">Telepon</h3>
-                    <p className="text-gray-500">+62 881-0118-36906</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-blue-100 p-3 rounded-full mr-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-[#21B7E2]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-800">Email</h3>
-                    <p className="text-gray-500">anteraja@laundry.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-blue-100 p-3 rounded-full mr-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-[#21B7E2]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-800">Lokasi</h3>
-                    <p className="text-gray-500">
-                      Jl mengkudu Gg V Blok M, no.31, Kel.Lagoa, Kec.Koja,
-                      Jakarta Utara.{" "}
+                    <h3 className="font-semibold text-gray-800">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                      {item.text}
                     </p>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right - WhatsApp CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full md:w-1/2 bg-gradient-to-br from-sky-500 to-cyan-500 p-10 rounded-2xl text-white shadow-2xl flex flex-col items-center justify-center"
+          >
+            <div className="bg-white/20 p-6 rounded-full mb-6">
+              <img src={WaIcon} alt="WhatsApp Icon" className="w-14 h-14" />
             </div>
 
-            {/* Bagian Kanan - CTA WhatsApp */}
-            <div className="w-full md:w-1/2 bg-gradient-to-br from-[#21B7E2] to-[#1aa3ca] p-8 md:p-10 flex flex-col justify-center items-center text-white rounded-xl">
-              <div className="bg-white/20 p-6 rounded-full inline-flex mb-6">
-                <img src={WaIcon} alt="WhatsApp Icon" className="w-12 h-12" />
-              </div>
+            <h3 className="text-2xl font-bold mb-4 text-center">
+              Ingin Pesan atau Butuh Bantuan Cepat?
+            </h3>
+            <p className="text-white/90 text-center mb-8 text-base md:text-lg">
+              Tim kami siap membantu Anda kapan pun dibutuhkan. Hubungi kami
+              langsung melalui WhatsApp.
+            </p>
 
-              <h3 className="text-lg md:text-2xl font-bold mb-4">
-                Ingin Pesan / Butuh Bantuan Cepat?
-              </h3>
-              <p className="text-white/90 text-center text-sm md:text-lg mb-8">
-                Tim layanan pelanggan kami siap membantu Anda 24/7. Dapatkan
-                respons instan melalui WhatsApp.
-              </p>
-
-              <a
-                href="https://wa.me/62881011836906"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-white text-[#21B7E2] text-sm md:text-lg font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 hover:bg-blue-50 transition duration-300 hover:scale-105"
-              >
-                <img src={WaIcon} alt="WhatsApp Icon" className="w-6 h-6" />
-                Chat via WhatsApp
-              </a>
-            </div>
-          </div>
+            <a
+              href="https://wa.me/62881011836906"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 bg-white text-sky-600 font-semibold px-8 py-4 rounded-xl shadow-lg w-full md:w-auto transition-all duration-300 hover:bg-blue-50 hover:scale-105"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Chat via WhatsApp
+            </a>
+          </motion.div>
         </div>
       </div>
     </section>

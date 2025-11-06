@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { login } from "../services/login.services";
+import { Loader2 } from "lucide-react";
 
-const LoginPage = () => {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,21 +32,24 @@ const LoginPage = () => {
         err.response?.data?.message ||
         "Login gagal. Periksa kembali email dan password Anda.";
       setError(message);
-      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-100 font-sans">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800">Selamat Datang</h2>
-          <p className="mt-2 text-gray-600">Silakan masuk untuk melanjutkan</p>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#21B7E2] to-[#1895b8] p-4 font-sans">
+      <div className="w-full max-w-md p-8 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl transform transition hover:scale-[1.01]">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Selamat Datang 👋
+          </h2>
+          <p className="mt-2 text-gray-600">
+            Masuk untuk mulai menggunakan layanan laundry kami
+          </p>
         </div>
 
-        <form className="space-y-6" onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label
               htmlFor="email"
@@ -61,7 +65,7 @@ const LoginPage = () => {
               placeholder="contoh@email.com"
               required
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
@@ -80,44 +84,49 @@ const LoginPage = () => {
               placeholder="Masukkan password Anda"
               required
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
           {error && (
-            <p className="text-sm font-medium text-center text-red-500">
+            <div className="text-center text-sm font-medium text-red-500">
               {error}
-            </p>
+            </div>
           )}
 
-          <div>
-            <button
-              type="submit"
-              className="w-full px-4 py-3 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors duration-200"
-              disabled={isLoading}
-            >
-              {isLoading ? "Memproses..." : "Login"}
-            </button>
-          </div>
-        </form>
-        <p className="text-center text-sm text-gray-600">
-          Belum punya akun?{" "}
-          <Link
-            to="/register"
-            className="font-medium text-sky-600 hover:underline"
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center items-center gap-2 px-4 py-3 font-semibold text-white bg-gradient-to-r from-[#21B7E2] to-[#1895b8] rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400 disabled:opacity-60 transition"
           >
-            Daftar di sini
-          </Link>
-        </p>
-        <p className="text-center text-sm text-gray-600">
-          Kembali ke{" "}
-          <Link to="/" className="font-medium text-sky-600 hover:underline">
-            Beranda
-          </Link>
-        </p>
+            {isLoading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} /> Memproses...
+              </>
+            ) : (
+              "Login"
+            )}
+          </button>
+        </form>
+
+        <div className="text-center mt-6 text-sm text-gray-600 space-y-2">
+          <p>
+            Belum punya akun?{" "}
+            <Link
+              to="/register"
+              className="font-medium text-[#21B7E2] hover:underline"
+            >
+              Daftar di sini
+            </Link>
+          </p>
+          <p>
+            Kembali ke{" "}
+            <Link to="/" className="font-medium text-[#21B7E2] hover:underline">
+              Beranda
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { register } from "../services/login.services";
-const RegisterPage = () => {
+import { Loader2 } from "lucide-react";
+
+export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
@@ -20,7 +22,7 @@ const RegisterPage = () => {
     setSuccessMessage("");
 
     if (password !== confirmPassword) {
-      setError("Password dan Konfirmasi Password tidak cocok.");
+      setError("Password dan konfirmasi password tidak cocok.");
       return;
     }
 
@@ -28,15 +30,12 @@ const RegisterPage = () => {
 
     try {
       const credentials = { name, email, telephone, password };
-
       await register(credentials);
 
       setSuccessMessage(
         "Registrasi berhasil! Anda akan diarahkan ke halaman login..."
       );
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       const message =
         err.response?.data?.message || "Registrasi gagal. Silakan coba lagi.";
@@ -47,17 +46,17 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-100 font-sans py-12">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
-        <div className="text-center">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#21B7E2] to-[#1895b8] p-4 font-sans">
+      <div className="w-full max-w-md p-8 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl transform transition hover:scale-[1.01]">
+        <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-gray-800">Buat Akun Baru</h2>
           <p className="mt-2 text-gray-600">
-            Daftar untuk mulai menggunakan layanan kami.
+            Daftar untuk mulai menggunakan layanan laundry kami 🧺
           </p>
         </div>
 
-        <form className="space-y-4" onSubmit={handleRegister}>
-          {/* Input untuk Nama */}
+        <form onSubmit={handleRegister} className="space-y-5">
+          {/* Nama Lengkap */}
           <div>
             <label
               htmlFor="name"
@@ -73,11 +72,11 @@ const RegisterPage = () => {
               placeholder="Masukkan nama Anda"
               required
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
-          {/* Input untuk Email */}
+          {/* Email */}
           <div>
             <label
               htmlFor="email"
@@ -93,11 +92,11 @@ const RegisterPage = () => {
               placeholder="contoh@email.com"
               required
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
-          {/* Input untuk Telepon */}
+          {/* Nomor Telepon */}
           <div>
             <label
               htmlFor="telephone"
@@ -113,11 +112,11 @@ const RegisterPage = () => {
               placeholder="08123456789"
               required
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
-          {/* Input untuk Password */}
+          {/* Password */}
           <div>
             <label
               htmlFor="password"
@@ -134,11 +133,11 @@ const RegisterPage = () => {
               required
               minLength={8}
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
-          {/* Input untuk Konfirmasi Password */}
+          {/* Konfirmasi Password */}
           <div>
             <label
               htmlFor="confirmPassword"
@@ -155,46 +154,48 @@ const RegisterPage = () => {
               required
               minLength={8}
               disabled={isLoading}
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#21B7E2] focus:outline-none disabled:bg-gray-100 transition"
             />
           </div>
 
-          {/* Notifikasi Error atau Sukses */}
+          {/* Pesan Error / Sukses */}
           {error && (
-            <p className="text-sm font-medium text-center text-red-500">
+            <div className="text-center text-sm font-medium text-red-500">
               {error}
-            </p>
+            </div>
           )}
           {successMessage && (
-            <p className="text-sm font-medium text-center text-green-500">
+            <div className="text-center text-sm font-medium text-green-600">
               {successMessage}
-            </p>
+            </div>
           )}
 
-          {/* Tombol Submit */}
-          <div className="pt-2">
-            <button
-              type="submit"
-              className="w-full px-4 py-3 font-bold text-white bg-sky-500 rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:bg-sky-300 disabled:cursor-not-allowed transition-colors duration-200"
-              disabled={isLoading}
-            >
-              {isLoading ? "Memproses..." : "Daftar"}
-            </button>
-          </div>
+          {/* Tombol Register */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center items-center gap-2 px-4 py-3 font-semibold text-white bg-gradient-to-r from-[#21B7E2] to-[#1895b8] rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400 disabled:opacity-60 transition"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} /> Memproses...
+              </>
+            ) : (
+              "Daftar"
+            )}
+          </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600">
+        <div className="text-center mt-6 text-sm text-gray-600">
           Sudah punya akun?{" "}
           <Link
             to="/login"
-            className="font-medium text-sky-600 hover:underline"
+            className="font-medium text-[#21B7E2] hover:underline"
           >
             Masuk di sini
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default RegisterPage;
+}

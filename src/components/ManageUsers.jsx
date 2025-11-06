@@ -1,87 +1,144 @@
 // src/components/admin/ManageUsers.jsx
-
 import { useState, useEffect } from "react";
-// Hanya butuh service getAllUser
 import { getAllUser } from "../services/admin.services.js";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllUser();
+      setUsers(data);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Memuat Data",
+        text: "Pastikan Anda login sebagai admin untuk melihat data pengguna.",
+        confirmButtonColor: "#0ea5e9",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getAllUser();
-        setUsers(data);
-      } catch (err) {
-        setError(
-          "Gagal memuat data pengguna. Pastikan Anda login sebagai admin."
-        );
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
-  if (loading) return <p className="text-gray-500">Memuat data pengguna...</p>;
-  if (error)
-    return (
-      <div className="p-4 bg-red-100 text-red-700 rounded-md">{error}</div>
-    );
-
   return (
-    <div>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-        Manajemen Pengguna
+    <div className="animate-fadeIn">
+      <h2 className="text-2xl font-bold text-sky-600 mb-6 text-center sm:text-left">
+        👥 Manajemen Pengguna
       </h2>
 
-      <div className="bg-white rounded-lg shadow-md border overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-600">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-              <th className="px-6 py-3">ID</th>
-              <th className="px-6 py-3">Nama</th>
-              <th className="px-6 py-3">Email</th>
-              <th className="px-6 py-3">Telepon</th>
-              <th className="px-6 py-3">Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr
-                key={user.userId}
-                className="bg-white border-b hover:bg-gray-50"
-              >
-                <td className="px-6 py-4 font-medium">{user.userId}</td>
-                <td className="px-6 py-4 font-medium text-gray-900">
-                  {user.name}
-                </td>
-                <td className="px-6 py-4">{user.email}</td>
-                <td className="px-6 py-4">{user.telephone}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      user.role === "admin"
-                        ? "bg-indigo-100 text-indigo-800"
-                        : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {user.role}
-                  </span>
-                </td>
+      {/* 🖥️ Tampilan Desktop */}
+      <div className="hidden sm:block bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-3 font-semibold">ID</th>
+                <th className="px-6 py-3 font-semibold">Nama</th>
+                <th className="px-6 py-3 font-semibold">Email</th>
+                <th className="px-6 py-3 font-semibold">Telepon</th>
+                <th className="px-6 py-3 font-semibold">Role</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="5" className="text-center p-6 text-gray-500">
+                    Memuat data pengguna...
+                  </td>
+                </tr>
+              ) : users.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="text-center p-6 text-gray-500 italic"
+                  >
+                    Belum ada pengguna yang terdaftar.
+                  </td>
+                </tr>
+              ) : (
+                users.map((user, i) => (
+                  <tr
+                    key={user.userId}
+                    className={`transition-all duration-150 ${
+                      i % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    } hover:bg-sky-50`}
+                  >
+                    <td className="px-6 py-4 font-medium text-gray-700">
+                      {user.userId}
+                    </td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">
+                      {user.name}
+                    </td>
+                    <td className="px-6 py-4 break-all">{user.email}</td>
+                    <td className="px-6 py-4">{user.telephone || "-"}</td>
+                    <td className="px-6 py-4">
+                      <RoleBadge role={user.role} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 📱 Tampilan Mobile */}
+      <div className="block sm:hidden space-y-4">
+        {loading ? (
+          <p className="text-center text-gray-500">Memuat data pengguna...</p>
+        ) : users.length === 0 ? (
+          <p className="text-center text-gray-500 italic">
+            Belum ada pengguna yang terdaftar.
+          </p>
+        ) : (
+          users.map((user) => (
+            <div
+              key={user.userId}
+              className="bg-white/90 backdrop-blur-sm border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-all"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold text-sky-700">{user.name}</h3>
+                <RoleBadge role={user.role} />
+              </div>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium text-gray-700">ID:</span>{" "}
+                {user.userId}
+              </p>
+              <p className="text-sm text-gray-600 break-all">
+                <span className="font-medium text-gray-700">Email:</span>{" "}
+                {user.email}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium text-gray-700">Telepon:</span>{" "}
+                {user.telephone || "-"}
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 };
+
+// 🔸 Komponen Badge Role
+const RoleBadge = ({ role }) => (
+  <span
+    className={`px-3 py-1.5 text-xs font-semibold rounded-full ${
+      role === "admin"
+        ? "bg-indigo-100 text-indigo-700 border border-indigo-200"
+        : "bg-green-100 text-green-700 border border-green-200"
+    }`}
+  >
+    {role}
+  </span>
+);
 
 export default ManageUsers;
